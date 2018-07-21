@@ -44,5 +44,5 @@ cmake ..
 make
 ```
 
-3. Assuming the examples all built correctly, you should have several executables in your build
-directory, organized into   
+3. Assuming the examples all built correctly, you should have some executables in a new `bin` directory, organized into 
+`pcl` and `open3d` subdirectories.
