@@ -51,7 +51,7 @@ examples:
 mkdir build
 cd build
 cmake ..  
-make -j8 && make install
+make -j && make install
 ```
 
 3. Assuming the examples all built correctly, you should have some executables in a new `bin` directory.
@@ -125,7 +125,12 @@ Compute PFH features on SIFT keypoints for two point clouds and then compute the
 ./pcl_keypoints ../data/robot correspondences
 ```
 #### Open3D
-...
+Open3D uses downsampled point clouds rather than keypoints when computing features and correspondences.
+However, it is possible to compute PFH features on a downsampled point cloud:
+```
+python3 open3d_keypoints.py
+```
+
 ### Trees:
 #### PCL
 Put some random points into a KdTree; do NN and radius search near a random point in space:
@@ -137,6 +142,10 @@ Put some random points into an Octree; do voxel, NN, and radius search near a ra
 ./pcl_octree
 ```
 #### Open3D
+Load a point cloud into a KdTree, then do NN and radius search around a point in the cloud:
+```
+python3 open3d_kdtree.py
+```
 
 ### Sample Consensus:
 #### PCL
@@ -149,6 +158,7 @@ Generate points as before, but use sample consensus to find inliers to a planar 
 ./pcl_sample_consensus -f
 ```
 #### Open3D
+Plane fitting is not implemented in Open3D, but would be straightforward to implement.  RANSAC is used implicitly within Open3D's registration functionaity.
 
 ### Segmentation:
 #### PCL
@@ -169,16 +179,17 @@ Visualize the output with all clusters in the same viewport:
 pcl_viewer cloud_cluster_0.pcd cloud_cluster_1.pcd cloud_cluster_2.pcd cloud_cluster_3.pcd cloud_cluster_4.pcd
 ```
 #### Open3D
+Operations for plane segmentation and clustering are not implemented in Open3D, but the algorithms would be straightforward to implement.
 
 ### Registration:
 #### PCL
 Perform iterative closest point to align two point clouds:
 ```
-./pcl_icp ../data/robot1.pcd ../data/robot2.pcd
+./pcl_icp ../data/cloud_bin_0.pcd ../data/cloud_bin_1.pcd
 ```
 Visualize aligned and combined point cloud beside originals:
 ```
-pcl_viewer -multiview 1 ../data/robot1.pcd ../data/robot2.pcd icp_aligned.pcd
+pcl_viewer -multiview 1 ../data/pcl_icp_init.pcd ../data/pcl_icp_aligned.pcd
 ```
 Attempt to fit several point cloud templates to the target point cloud, output the best match:
 ```
@@ -190,6 +201,24 @@ pcl_viewer ../data/person.pcd template_aligned.pcd
 ```
 you may need to press '1' several times to get a good color scheme for the two point clouds to be visible.
 #### Open3D
+Open3D offers implementations of several algorithms for both local and global point cloud registration.  
+Local ICP with an initial guess can be performed with either point-to-point or point-to-plane alignment:
+```
+python3 open3d_icp.py
+```
+There is also a variant of the ICP algorithm within Open3D that utilizes color as well as geometric information:
+```
+python3 open3d_colored_icp.py
+```
+These local methods rely on a reasonably close initial guess.  
+For global registration, an initial coarse registration is computed using feature correspondences, in order to bootstrap a finer alignment step:
+```
+python3 open3d_global_registration.py
+```
+Finally, there is also another algorithm to compute this coarse initial registration, which is significantly faster than the standard RANSAC. This script compares the two approaches:
+```
+python3 open3d_fast_global_registration.py
+```
 
 
 ## More Tutorials

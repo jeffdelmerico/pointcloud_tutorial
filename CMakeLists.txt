@@ -51,4 +51,6 @@ add_executable (pcl_template_matching registration/pcl_template_matching.cpp)
 target_link_libraries (pcl_template_matching ${PCL_LIBRARIES})
 
 set(BINARIES pcl_write_pcd pcl_read_pcd pcl_openni_grabber pcl_compute_normals pcl_filtering pcl_keypoints pcl_sample_consensus pcl_plane_segmentation pcl_euclidean_cluster_extraction pcl_kdtree pcl_octree pcl_icp pcl_template_matching)
+set(PYTHON_SRC 3D_features/open3d_compute_normals.py filtering/open3d_filtering.py io/open3d_file_io.py keypoints/open3d_keypoints.py registration/open3d_icp.py registration/open3d_colored_icp.py registration/open3d_global_registration.py registration/open3d_fast_global_registration.py trees/open3d_kdtree.py)
 install(TARGETS ${BINARIES} DESTINATION bin)
+install(FILES ${PYTHON_SRC} DESTINATION bin)
