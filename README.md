@@ -62,90 +62,133 @@ cd ../bin
 ```
 ### I/O:
 #### PCL
-    - write a pcd file of randomly generated points and visualize it with pcd_viewer
-        ./pcl_write_pcd
-        pcl_viewer test_pcd.pcd
-    - read in that same pcd file
-        ./pcl_read_pcd
-    - grab point clouds from an RGBD camera (be sure one is connected)
-        ./pcl_openni_grabber
+Write a pcd file of randomly generated points and visualize it with pcd_viewer:
+```
+./pcl_write_pcd
+pcl_viewer test_pcd.pcd
+```
+Read in that same pcd file:
+```
+./pcl_read_pcd
+```
+Grab point clouds from an RGBD camera (be sure one is connected):
+```
+./pcl_openni_grabber
+```
 #### Open3D
-    - read and then write a copy of a pcd, ply, and jpg file
-        python3 open3d_file_io.py
+Read and then write a copy of a pcd, ply, and jpg file:
+```
+python3 open3d_file_io.py
+```
 
 ### 3D Features:
 #### PCL
-    - compute point normals on a point cloud and use built-in visualizer
-        ./pcl_compute_normals
+Compute point normals on a point cloud and use built-in visualizer:
+```
+./pcl_compute_normals
+```
 #### Open3D
-    - compute point normals on a point cloud and use built-in visualizer
-        python3 open3d_compute_normals.py
-      press 'n' to visualize the normals once they have been computed
+Compute point normals on a point cloud and use built-in visualizer:
+```
+python3 open3d_compute_normals.py
+```
+press 'n' to visualize the normals once they have been computed.
 
 ### Filtering:
 #### PCL    
-    - run one of 3 different filters on a point cloud
-        ./pcl_filtering 0  (pass through filter)
-        ./pcl_filtering 1  (downsample to a voxel grid)
-        ./pcl_filtering 2  (perform statistical outlier removal)
-    - visualize the output side-by-side with the original
-        pcl_viewer -multiview 1 ../data/table_scene_lms400.pcd table_scene_lms400_filtered.pcd
-      press 'r' to zero the viewpoint, and 'l' to list the color handlers
+Run one of 3 different filters on a point cloud:
+```
+./pcl_filtering 0  (pass through filter)
+./pcl_filtering 1  (downsample to a voxel grid)
+./pcl_filtering 2  (perform statistical outlier removal)
+```
+Visualize the output side-by-side with the original:
+```
+pcl_viewer -multiview 1 ../data/table_scene_lms400.pcd table_scene_lms400_filtered.pcd
+```
+press 'r' to zero the viewpoint, and 'l' to list the color handlers.
 #### Open3D
-    - run the first two filters sequentially
-        python3 open3d_filtering.py
-      outlier removal filtering is not supported, and it's also not straightforward to visualize multiple point clouds separately
+Run the first two filters sequentially:
+```
+python3 open3d_filtering.py
+```
+Outlier removal filtering is not supported, and it's also not straightforward to visualize multiple point clouds separately.
 
 ### Keypoints:
 #### PCL
-    - Find SIFT keypoints in a point cloud and visualize
-        ./pcl_keypoints ../data/robot1.pcd keypoints
-    - Compute PFH features on SIFT keypoints for two point clouds and then compute their
-      correspondences
-        ./pcl_keypoints ../data/robot correspondences
+Find SIFT keypoints in a point cloud and visualize:
+```
+./pcl_keypoints ../data/robot1.pcd keypoints
+```
+Compute PFH features on SIFT keypoints for two point clouds and then compute their correspondences:
+```
+./pcl_keypoints ../data/robot correspondences
+```
 #### Open3D
-
+...
 ### Trees:
 #### PCL
-    - Put some random points into a KdTree; do NN and radius search near a random point in space
-        ./pcl_kdtree
-    - Put some random points into an Octree; do voxel, NN, and radius search near a random point in
-      space
-        ./pcl_octree
+Put some random points into a KdTree; do NN and radius search near a random point in space:
+```
+./pcl_kdtree
+```
+Put some random points into an Octree; do voxel, NN, and radius search near a random point in space:
+```
+./pcl_octree
+```
 #### Open3D
 
 ### Sample Consensus:
 #### PCL
-    - Generate some points that fit a planar model as well as a bunch of outliers
-        ./pcl_sample_consensus
-    - Generate points as before, but use sample consensus to find inliers to a planar model
-        ./pcl_sample_consensus -f
+Generate some points that fit a planar model as well as a bunch of outliers:
+```
+./pcl_sample_consensus
+```
+Generate points as before, but use sample consensus to find inliers to a planar model:
+```
+./pcl_sample_consensus -f
+```
 #### Open3D
 
 ### Segmentation:
 #### PCL
-    - Perform iterative plane segmentation on real point cloud data
-        ./pcl_plane_segmentation
-    - Visualize the output side-by-side with the original
-        pcl_viewer -multiview 1 ../data/table_scene_lms400.pcd table_scene_lms400_first_plane.pcd table_scene_lms400_second_plane.pcd
-    - Perform euclidean cluster extraction after removing the dominant planes in the scene
-        ./pcl_euclidean_cluster_extraction
-    - Visualize the output with all clusters in the same viewport
-        pcl_viewer cloud_cluster_0.pcd cloud_cluster_1.pcd cloud_cluster_2.pcd cloud_cluster_3.pcd cloud_cluster_4.pcd
+Perform iterative plane segmentation on real point cloud data:
+```
+./pcl_plane_segmentation
+```
+Visualize the output side-by-side with the original:
+```
+pcl_viewer -multiview 1 ../data/table_scene_lms400.pcd table_scene_lms400_first_plane.pcd table_scene_lms400_second_plane.pcd
+```
+Perform euclidean cluster extraction after removing the dominant planes in the scene:
+```
+./pcl_euclidean_cluster_extraction
+```
+Visualize the output with all clusters in the same viewport:
+```
+pcl_viewer cloud_cluster_0.pcd cloud_cluster_1.pcd cloud_cluster_2.pcd cloud_cluster_3.pcd cloud_cluster_4.pcd
+```
 #### Open3D
 
 ### Registration:
 #### PCL
-    - Perform iterative closest point to align two point clouds
-        ./pcl_icp ../data/robot1.pcd ../data/robot2.pcd
-    - Visualize aligned and combined point cloud beside originals
-        pcl_viewer -multiview 1 ../data/robot1.pcd ../data/robot2.pcd icp_aligned.pcd
-    - Attempt to fit several point cloud templates to the target point cloud, output the best match
-        ./pcl_template_matching ../data/object_templates.txt ../data/person.pcd
-    - Visualize the matched and aligned template against the target PC
-        pcl_viewer ../data/person.pcd template_aligned.pcd
-      you may need to press '1' several times to get a good color scheme for the two point clouds
-      to be visible
+Perform iterative closest point to align two point clouds:
+```
+./pcl_icp ../data/robot1.pcd ../data/robot2.pcd
+```
+Visualize aligned and combined point cloud beside originals:
+```
+pcl_viewer -multiview 1 ../data/robot1.pcd ../data/robot2.pcd icp_aligned.pcd
+```
+Attempt to fit several point cloud templates to the target point cloud, output the best match:
+```
+./pcl_template_matching ../data/object_templates.txt ../data/person.pcd
+```
+Visualize the matched and aligned template against the target PC:
+```
+pcl_viewer ../data/person.pcd template_aligned.pcd
+```
+you may need to press '1' several times to get a good color scheme for the two point clouds to be visible.
 #### Open3D
 
 
