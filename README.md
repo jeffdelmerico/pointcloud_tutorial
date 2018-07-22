@@ -22,11 +22,21 @@ sudo apt-get install pcl-tools
 
 ### Open3D
 This library can be installed from source, according to these directions [http://www.open3d.org/docs/getting_started.html#ubuntu](http://www.open3d.org/docs/getting_started.html#ubuntu).
-First, get the code:
+However, I found that for Ubuntu 16.04, there are conflicts between ROS and libpng16-dev, which is one of the normal dependencies if you follow the instructions.  
+Executing their script to install dependencies will remove ROS, which you probably don't want.  
+So here is a workaround that I had success with on 16.04:
 ```
 git clone https://github.com/IntelVCL/Open3D
+sudo pip (or pip3) install pybind11
+sudo apt-get install xorg-dev libglu1-mesa-dev libgl1-mesa-glx libglew-dev libglfw3-dev libjsoncpp-dev libeigen3-dev libjpeg-dev python-dev python-tk python3-dev python3-tk
+cd Open3D
+mkdir build
+cd build
+cmake -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python (or /usr/bin/python3) -DBUILD_PNG=YES ../src
+make -j
+sudo make install
 ```
-and then follow the directions for your OS.
+You can then verify that the library installed correctly by opening a python interpreter and checking to see that `import open3d` does not produce errors.
 
 ### Building the Examples
 1. If you're reading this README, you've probably already cloned this repository, but if not,
@@ -60,12 +70,17 @@ cd ../bin
     - grab point clouds from an RGBD camera (be sure one is connected)
         ./pcl_openni_grabber
 #### Open3D
+    - read and then write a copy of a pcd, ply, and jpg file
+        python3 open3d_file_io.py
 
 ### 3D Features:
 #### PCL
     - compute point normals on a point cloud and use built-in visualizer
         ./pcl_compute_normals
 #### Open3D
+    - compute point normals on a point cloud and use built-in visualizer
+        python3 open3d_compute_normals.py
+      press 'n' to visualize the normals once they have been computed
 
 ### Filtering:
 #### PCL    
@@ -77,6 +92,9 @@ cd ../bin
         pcl_viewer -multiview 1 ../data/table_scene_lms400.pcd table_scene_lms400_filtered.pcd
       press 'r' to zero the viewpoint, and 'l' to list the color handlers
 #### Open3D
+    - run the first two filters sequentially
+        python3 open3d_filtering.py
+      outlier removal filtering is not supported, and it's also not straightforward to visualize multiple point clouds separately
 
 ### Keypoints:
 #### PCL
